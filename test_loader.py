@@ -4,7 +4,6 @@ from os.path import join, isfile
 import re
 
 def list_directories(path):
-    # 
     return [f for f in os.listdir(path) if not isfile(f)]
 
 class test_loader:
@@ -110,7 +109,6 @@ def test(path):
     loader.set_sizes(1)
 
     test_ranges = loader.load_ranges()
-    print(test_ranges)
     loader.set_range(1)
 
     tests = loader.load_tests()

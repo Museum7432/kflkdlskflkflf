@@ -72,6 +72,21 @@ class test_loader:
     
     def get_test_name(self):
         return self.test
+    
+    def get_info(self):
+        info = dict()
+        
+        info["type"] = self.type
+
+        info["size"] = self.size
+
+        info["range"] = self.range
+
+        info["name"] = self.test
+
+        info["path"] = join(self.root_path,self.type,self.size, self.range, self.test)
+
+        return info
 
     def read_raw(self):
         path = join(self.root_path,self.type,self.size, self.range, self.test)

@@ -1,5 +1,6 @@
 from ortools.algorithms import pywrapknapsack_solver
 from test_loader import test_loader
+from results_saver import results_saver
 import os
 from os.path import join
 from random import sample
@@ -7,12 +8,13 @@ import time
 
 # ./tests/kplib
 kplib_path = join( "tests", "kplib")
-
+results_path = "outputs"
 def main():
     # Create the solver.
     solver = pywrapknapsack_solver.KnapsackSolver(
         pywrapknapsack_solver.KnapsackSolver.
         KNAPSACK_MULTIDIMENSION_BRANCH_AND_BOUND_SOLVER, 'KnapsackExample')
+    
 
     # values = [
     #     360, 83, 59, 130, 431, 67, 230, 52, 93, 125, 670, 892, 600, 38, 48, 147,
@@ -50,6 +52,8 @@ def main():
 
     test = test_loader(kplib_path)
     solver.set_time_limit(30)
+
+    saver = results_saver(results_path)
     
     for t in test.load_types():
         test.set_types(t)
@@ -78,6 +82,33 @@ def main():
                     total_weight = sum([weights[0][item] for item in packed_items])
 
                     print("\tvalue: ", computed_value, "\n\tweight: ", total_weight,"\n\tduration: ",round(duration, 4))
+
+                    saver.save(
+                        test_info=test.get_info(),
+                        total_value=computed_value,
+                        total_weight=total_weight,
+                        runtime= duration,
+                        is_optimal= 30 - duration > 1,
+                        values=[values[i] for i in packed_items],
+                        weights=[weights[0][i] for i in packed_items]
+                    )
+
+                    """
+                    results:
+                        value
+                        weight
+
+                        isoptimal
+
+                        packed_items
+
+
+
+                    
+                    
+                    
+                    """
+                    
 
 
 

@@ -1,7 +1,9 @@
 from ortools.algorithms import pywrapknapsack_solver
-from test_loader import test
+from test_loader import test_loader
 import os
 from os.path import join
+from random import sample
+import time
 
 # ./tests/kplib
 kplib_path = join( "tests", "kplib")
@@ -44,9 +46,38 @@ def main():
     # print('Total weight:', total_weight)
     # print('Packed items:', packed_items)
     # print('Packed_weights:', packed_weights)
-    test(kplib_path)
+    # test(kplib_path)
 
+    test = test_loader(kplib_path)
+    solver.set_time_limit(30)
+    
+    for t in test.load_types():
+        test.set_types(t)
 
+        for s in test.load_sizes():
+            test.set_size(s)
+
+            for r in test.load_ranges():
+                test.set_range(r)
+
+                for i in sample( test.load_tests(),2):
+                    test.set_test(i)
+
+                    _ , capacities, values, weights = test.parse_test()
+
+                    print(test.get_type()," ", test.get_size()," ", test.get_range()," ", test.get_test_name())
+                    
+                    solver.Init(values, weights, capacities)
+
+                    start_time = time.time()
+                    computed_value = solver.Solve()
+                    duration = time.time() - start_time
+
+                    packed_items = [item for item in range(0, len(weights[0])) if solver.BestSolutionContains(item_id=item)]
+                    
+                    total_weight = sum([weights[0][item] for item in packed_items])
+
+                    print("\tvalue: ", computed_value, "\n\tweight: ", total_weight,"\n\tduration: ",round(duration, 4))
 
 
 

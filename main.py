@@ -3,7 +3,7 @@ from test_loader import test_loader
 from results_saver import results_saver
 import os
 from os.path import join
-from random import sample
+from random import sample, choice
 import time
 
 
@@ -83,25 +83,27 @@ def main():
             for r in test.load_ranges():
                 test.set_range(r)
 
-                for i in sample( test.load_tests(),2):
+                test.set_test(choice(test.load_tests()))
 
-                    test.set_test(i)
+                # for i in sample( test.load_tests(),2):
 
-                    print(test.get_test_path())
+                #     test.set_test(i)
+                
+                print(test.get_test_path())
 
-                    duration, packed_values, packed_weights  = run_solver(test, time_limit)
+                duration, packed_values, packed_weights  = run_solver(test, time_limit)
 
-                    print("\tduration: ",round(duration, 4))
+                print("\tduration: ",round(duration, 4))
 
-                    saver.save(
-                        test_info=test.get_info(),
-                        total_value=sum(packed_values),
-                        total_weight=sum(packed_weights),
-                        runtime= round(duration, 5),
-                        is_optimal= time_limit - duration > 1,
-                        values=packed_values,
-                        weights=packed_weights
-                    )
+                saver.save(
+                    test_info=test.get_info(),
+                    total_value=sum(packed_values),
+                    total_weight=sum(packed_weights),
+                    runtime= round(duration, 5),
+                    is_optimal= time_limit - duration > 1,
+                    values=packed_values,
+                    weights=packed_weights
+                )
 
 
 

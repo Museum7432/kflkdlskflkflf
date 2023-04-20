@@ -2,4 +2,5 @@ tests/*
 outputs/*
 .ipynb_checkpoints
 !tests/README
+!outputs/README
 __pycache__

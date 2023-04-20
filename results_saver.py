@@ -52,8 +52,8 @@ class results_saver:
 
         f = open(txt_path,"a")
 
-        f.write("\n" + test_info["path"] + "\n")
-        f.write("\n" + str(len(values)) + "\n")
+        f.write(test_info["path"] + "\n")
+        f.write(str(len(values)) + "\n")
 
         for v in values:
             f.write(str(v) + " ")

@@ -73,6 +73,9 @@ class test_loader:
     def get_test_name(self):
         return self.test
     
+    def get_test_path(self):
+        return join(self.root_path,self.type,self.size, self.range, self.test)
+    
     def get_info(self):
         info = dict()
         
@@ -84,12 +87,12 @@ class test_loader:
 
         info["name"] = self.test
 
-        info["path"] = join(self.root_path,self.type,self.size, self.range, self.test)
+        info["path"] = self.get_test_path()
 
         return info
 
-    def read_raw(self):
-        path = join(self.root_path,self.type,self.size, self.range, self.test)
+    def _read_raw(self):
+        path = self.get_test_path()
 
         raw = deque([])
         with open(path, 'r') as f:
@@ -99,7 +102,7 @@ class test_loader:
         return raw
     
     def parse_test(self):
-        raw = self.read_raw()
+        raw = self._read_raw()
 
         no_items = raw.popleft()
         capacities = [raw.popleft()]

@@ -36,17 +36,13 @@ def run_solver(loader, time_limit = 10):
     packed_weights = [weights[0][i] for i in packed_items]
 
     return duration, packed_values, packed_weights
-                    
-    
-
-
-
 
 
 # ./tests/kplib
 kplib_path = join( "tests", "kplib")
 results_path = "outputs"
 time_limit = 90
+offset = 2
 
 def main():
     test = test_loader(kplib_path)
@@ -73,11 +69,26 @@ def main():
     # print(duration)
 
     saver = results_saver(results_path)
+
+    selected_sizes = [
+        'n00050',
+        'n00100',
+        'n01000',
+        'n05000',
+        'n10000'
+    ]
+
+
     
     for t in test.load_types():
         test.set_types(t)
 
-        for s in test.load_sizes():
+        
+
+        selected_sizes = [i for i in test.load_sizes() if i in selected_sizes]
+
+        for s in selected_sizes:
+
             test.set_size(s)
 
             for r in test.load_ranges():
@@ -93,14 +104,14 @@ def main():
 
                 duration, packed_values, packed_weights  = run_solver(test, time_limit)
 
-                print("\tduration: ",round(duration, 4))
+                print("\tduration: ", f'{round(duration, 5):.5f}')
 
                 saver.save(
                     test_info=test.get_info(),
                     total_value=sum(packed_values),
                     total_weight=sum(packed_weights),
-                    runtime= round(duration, 5),
-                    is_optimal= time_limit - duration > 1,
+                    runtime= f'{round(duration, 5):.5f}',
+                    is_optimal= time_limit - duration > offset,
                     values=packed_values,
                     weights=packed_weights
                 )

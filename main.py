@@ -46,7 +46,7 @@ def run_solver(loader, time_limit = 10):
 # ./tests/kplib
 kplib_path = join( "tests", "kplib")
 results_path = "outputs"
-time_limit = 3
+time_limit = 90
 
 def main():
     test = test_loader(kplib_path)
@@ -83,7 +83,7 @@ def main():
             for r in test.load_ranges():
                 test.set_range(r)
 
-                for i in sample( test.load_tests(),1):
+                for i in sample( test.load_tests(),2):
 
                     test.set_test(i)
 
